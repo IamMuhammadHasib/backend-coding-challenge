@@ -10,7 +10,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - PORT=3000 
+      - PORT=3000
       - NODE_ENV=development
       - MONGO_URI=mongodb://root:pass@mongo:27017/
       - DB_NAME=leadman_dev
@@ -37,7 +37,7 @@ services:
       test: ["CMD", "mongo", "admin", "--eval", "db.adminCommand('ping')"]
       interval: 10s
       timeout: 10s
-      retries: 5 
+      retries: 5
 
   tests:
       image: node:18-alpine
@@ -62,6 +62,18 @@ services:
       profiles:
         - test
 
+  redis:
+    image: redis:7.0
+    container_name: redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
 
 volumes:
-  mongo-data: 
+  mongo-data:
+  redis-data:
